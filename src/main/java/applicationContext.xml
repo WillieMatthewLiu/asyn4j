@@ -1,0 +1,48 @@
+<beans  
+    xmlns="http://www.springframework.org/schema/beans"  
+    xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"  
+    xmlns:jee="http://www.springframework.org/schema/jee"  
+    xmlns:aop="http://www.springframework.org/schema/aop"  
+    xmlns:tx="http://www.springframework.org/schema/tx"  
+    xmlns:context="http://www.springframework.org/schema/context"  
+    xsi:schemaLocation="     
+       http://www.springframework.org/schema/beans http://www.springframework.org/schema/beans/spring-beans-2.5.xsd     
+       http://www.springframework.org/schema/tx http://www.springframework.org/schema/tx/spring-tx-2.5.xsd     
+       http://www.springframework.org/schema/jee http://www.springframework.org/schema/jee/spring-jee-2.5.xsd    
+       http://www.springframework.org/schema/aop http://www.springframework.org/schema/aop/spring-aop-2.5.xsd    
+       http://www.springframework.org/schema/context http://www.springframework.org/schema/context/spring-context-2.5.xsd"   
+    >
+
+   <bean id="testBean" class="com.googlecode.asyn4j.springbean.TestBean">
+	
+   </bean>
+   
+   
+   <bean id="springBeanUtil" class="com.googlecode.asyn4j.spring.AsynSpringUtil">
+	
+   </bean>
+	
+   <bean id="asynService" class="com.googlecode.asyn4j.spring.AsynServiceFactoryBean">
+	    <!--设置自定义相关参数-->
+	    <property name="maxCacheWork" value="100"></property>
+		<property name="addWorkWaitTime" value="2000"></property>
+		<property name="workThreadNum" value="3"></property>
+		<property name="callbackThreadNum" value="2"></property>
+		<!--添加相关处理器-->
+		<property name="errorAsynWorkHandler">
+			<bean class="com.googlecode.asyn4j.core.handler.DefaultErrorAsynWorkHandler"/>
+	    </property>
+		<property name="workQueueFullHandler">
+			<bean class="com.googlecode.asyn4j.core.handler.CacheAsynWorkHandler"/>
+	   </property>
+   </bean>
+
+   <bean id="testMain" class="com.googlecode.asyn4j.springbean.TestMain">
+		<property name="asynService">
+			 <ref local="asynService"></ref>
+		</property>
+   </bean>
+   
+   
+  
+</beans>
